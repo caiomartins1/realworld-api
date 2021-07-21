@@ -6,7 +6,8 @@
   "author": "Caio Martins <dev.caiomartins@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node-dev src/server.ts"
+    "start": "ts-node-dev src/server.ts",
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
@@ -16,6 +17,10 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "pg": "^8.6.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.34"
   }
 }
