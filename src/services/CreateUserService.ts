@@ -1,6 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 import { UsersRepository } from '../repositories/UsersRepository';
 import { hash } from 'bcryptjs';
+import { AuthenticateUserService } from './AuthenticateUserService';
 
 type CreateUserRequest = {
   username: string;
@@ -16,7 +17,7 @@ export class CreateUserService {
     }
 
     const usersRepository = getCustomRepository(UsersRepository);
-
+    const authenticateUserService = new AuthenticateUserService();
     const usernameAlreadyExists = await usersRepository.find({ username });
     const emailAlreadyExists = await usersRepository.find({ email });
 
@@ -38,6 +39,21 @@ export class CreateUserService {
 
     await usersRepository.save(createdUser);
 
-    return { user: { email, token: '', username, bio: '', image: '' } };
+    //TODO: rethink response modeling
+    const authUserRes = await authenticateUserService.execute({
+      email: createdUser.email,
+      password,
+    });
+
+    //TODO: Add bio and image to database schema
+    return {
+      user: {
+        email,
+        token: authUserRes.user.token,
+        username,
+        bio: '',
+        image: '',
+      },
+    };
   }
 }
